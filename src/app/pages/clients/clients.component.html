@@ -1,0 +1,55 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">Simple Table</h4>
+                        <p class="card-category"> Here is a subtitle for this table</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Apellido
+                                    </th>
+                                    <th>
+                                        Ciudad
+                                    </th>
+                                    <th>
+                                        ¿Activo?
+                                    </th>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let client of clients">
+                                        <td>
+                                            {{client.firstName}}
+                                        </td>
+                                        <td>
+                                            {{client.lastName}}
+                                        </td>
+                                        <td>
+                                            {{client.city}}
+                                        </td>
+                                        <td>
+                                            {{client.isActive}}
+                                        </td>
+                                        <td class="text-primary">
+                                            $36,738
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
