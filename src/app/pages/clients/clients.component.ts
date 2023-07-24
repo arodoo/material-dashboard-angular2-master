@@ -1,37 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { Client } from 'app/models/client';
-import { ClientsService } from 'app/services/clients.service';
-import { Subject } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {Client} from 'app/models/client';
+import {ClientsService} from 'app/services/clients.service';
+import {filter} from 'rxjs';
 
 @Component({
-  selector: 'app-clients',
-  templateUrl: './clients.component.html',
-  styleUrls: ['./clients.component.scss']
+    selector: 'app-clients',
+    templateUrl: './clients.component.html',
+    styleUrls: ['./clients.component.scss']
 })
 export class ClientsComponent implements OnInit {
 
-  clients: Client[];
-  dtOptions: DataTables.Settings = {}; // Opciones de la tabla
-  dtTrigger: Subject<any> = new Subject<any>(); // Disparador para renderizar la tabla
-
-  constructor(private clientService: ClientsService) { }
-
-  ngOnInit(): void {
-    // Configurar las opciones de la tabla
-    this.dtOptions = {
-      pagingType: 'full_numbers', // Mostrar botones de paginación con números
-      pageLength: 10, // Mostrar 10 filas por página
-      processing: true // Mostrar indicador de carga
-    };
+    clients: Client[];
+    newClient: Client;
+    p: number = 1;
+    isClientActive: String;
+    protected filter = "";
 
 
-    this.clientService.getAllClients().subscribe((clients) => {
-      this.clients = clients;
-      this.dtTrigger.next(1); // Disparar el renderizado de la tabla
-    },
-    (error) => {
-      console.log(error);
-    });
-  }
+    constructor(private clientService: ClientsService) {
+    }
+
+    ngOnInit(): void {
+        try {
+            this.clientService.getAllClients().subscribe((clients) => {
+                    this.clients = clients;
+                },
+                (error) => {
+                    console.log(error);
+                });
+            if (this.isClientActive != "true") {
+                this.isClientActive = "Activo";
+            } else {
+                this.isClientActive = "Inactivo";
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 }

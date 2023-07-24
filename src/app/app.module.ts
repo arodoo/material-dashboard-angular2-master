@@ -7,8 +7,7 @@ import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { DataTablesModule } from 'angular-datatables';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   imports: [
@@ -18,8 +17,8 @@ import { DataTablesModule } from 'angular-datatables';
     HttpClientModule,
     ComponentsModule,
     RouterModule,
-    AppRoutingModule,
-    DataTablesModule 
+    AppRoutingModule, 
+    NgxPaginationModule,
   ],
   declarations: [
     AppComponent,
