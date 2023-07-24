@@ -4,3 +4,35 @@ input {
   padding: 5px;
   background-color: #f0f0f0;
 }
+
+/* el contenedor del formulario */
+.form-container {
+  position: fixed;
+  z-index: 10;
+  display: none;
+  width: 80%;
+  height: auto;
+  margin: 10% auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* el contenedor del formulario cuando se muestra */
+.form-container.show {
+  display: block; /* se muestra como bloque */
+  animation: slide-in .5s ease-in-out; /* se aplica una animación de deslizamiento */
+}
+
+/* la animación de deslizamiento */
+@keyframes slide-in {
+  from {
+    transform: translateY(-100%); /* empieza desde arriba del todo */
+    opacity: 0; /* empieza con opacidad cero */
+  }
+  to {
+    transform: translateY(0); /* termina en su posición normal */
+    opacity: 1; /* termina con opacidad uno */
+  }
+}

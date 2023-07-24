@@ -17,7 +17,7 @@ export interface Client {
 }
 
 export enum Gender {
-    Male = 'Male',
-    Female = 'Female',
-    Other = 'Other',
+    M = 'M',
+    F = 'F',
+    O = 'O',
   }
