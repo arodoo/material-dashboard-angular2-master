@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Client} from 'app/models/client';
 import {Gender} from '../../models/client';
 import {ClientsService} from 'app/services/clients.service';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-clients',
@@ -15,15 +16,26 @@ export class ClientsComponent implements OnInit {
     newClientForm: FormGroup;
 
     Gender = Gender;
-    p: number = 1;
+    p = 1;
     isClientActive: String;
-    protected filter = "";
+    protected filter = '';
     currentDate = new Date();
-    displayForm: boolean = false;
 
+    showForm = false;
+
+    showNewClientForm() {
+        this.showForm = true;
+        console.log(this.showForm);
+    }
+
+    cancel() {
+        this.showForm = false;
+        console.log(this.showForm);
+    }
 
     constructor(private clientService: ClientsService,
-                private fb: FormBuilder) {
+                private fb: FormBuilder,
+                private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -34,10 +46,11 @@ export class ClientsComponent implements OnInit {
                 (error) => {
                     console.log(error);
                 });
-            if (this.isClientActive != "true") {
-                this.isClientActive = "Activo";
+            // tslint:disable-next-line:triple-equals
+            if (this.isClientActive != 'true') {
+                this.isClientActive = 'Activo';
             } else {
-                this.isClientActive = "Inactivo";
+                this.isClientActive = 'Inactivo';
             }
         } catch (error) {
             alert(error);
@@ -46,12 +59,12 @@ export class ClientsComponent implements OnInit {
         this.newClientForm = this.fb.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email], Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
+            email: ['', [Validators.required, Validators.email], Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
             phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{10}')]], // Assuming a 10-digit phone number
             emergencyPhoneNumber: ['', Validators.pattern('[0-9]{10}')], // Assuming a 10-digit emergency phone number
             birthday: [this.currentDate, Validators.required],
-            gender: [Gender.M, Validators.required, ],
-            isActive: [true],
+            gender: [Gender.M, Validators.required ],
+            isActive: [null],
             streetAddress: ['', Validators.required],
             addressNumber: ['', Validators.required],
             colony: ['', Validators.required],
@@ -61,10 +74,6 @@ export class ClientsComponent implements OnInit {
         });
     }
 
-    showNewClientForm() {
-        this.displayForm = true;
-        console.log(this.displayForm);
-    }
 
     addClient() {
         this.clientService.createClient(this.newClientForm.value).subscribe({
@@ -77,7 +86,7 @@ export class ClientsComponent implements OnInit {
                     email: '',
                     phoneNumber: '',
                     emergencyPhoneNumber: '',
-                    birthday: null,
+                    birthday: this.currentDate,
                     gender: Gender.M,
                     isActive: true,
                     streetAddress: '',
@@ -87,6 +96,10 @@ export class ClientsComponent implements OnInit {
                     state: '',
                     zipCode: '',
                 });
+                this.snackBar.open('Cliente agregado', 'Cerrar', {
+                    duration: 3000
+                });
+                this.cancel();
             },
             error: (error) => {
                 alert(error);
@@ -94,4 +107,21 @@ export class ClientsComponent implements OnInit {
         });
     }
 
+
+    deleteClient(clientId: number) {
+        if (confirm ('¿Estás seguro de eliminar el cliente?')) {
+            this.clientService.deleteClient(clientId).subscribe({
+                next: (client) => {
+                    // tslint:disable-next-line:no-shadowed-variable
+                    this.clients = this.clients.filter((client) => client.clientId !== clientId);
+                    this.snackBar.open('Cliente eliminado', 'Cerrar', {
+                        duration: 3000
+                    });
+                },
+                error: (error) => {
+                    alert(error);
+                }
+            });
+        }
+    }
 }

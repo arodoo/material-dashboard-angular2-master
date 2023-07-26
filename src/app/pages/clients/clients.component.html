@@ -26,6 +26,9 @@
                                 <th>
                                     ¿Activo?
                                 </th>
+                                <th>
+                                    Acciones
+                                </th>
                                 </thead>
 
                                 <tbody>
@@ -42,6 +45,9 @@
                                     <td>
                                         {{this.isClientActive}}
                                     </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" (click)="deleteClient(client.clientId)">Eliminar</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                                 <pagination-controls (pageChange)="p = $event"></pagination-controls>
@@ -55,78 +61,82 @@
     </div>
 </div>
 
-<div class="form-container" [style.display]="displayForm">
+<div class="form-container" [class.show]="showForm">
+
     <form [formGroup]="newClientForm" (ngSubmit)="addClient()">
-        <div>
-            <label for="firstName">Nombre</label>
-            <input type="text" formControlName="firstName" id="firstName">
-            <span *ngIf="newClientForm.controls['firstName'].invalid && newClientForm.controls['firstName'].touched">El nombre es requerido</span>
-        </div>
-        <div>
-            <label for="lastName">Apellido</label>
-            <input type="text" formControlName="lastName" id="lastName">
-            <span *ngIf="newClientForm.controls['lastName'].invalid && newClientForm.controls['lastName'].touched">El apellido es requerido</span>
-        </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="email" formControlName="email" id="email">
-            <span *ngIf="newClientForm.controls['email'].invalid && newClientForm.controls['email'].touched">El email es requerido</span>
-            <span *ngIf="newClientForm.controls['email'].errors?.email && newClientForm.controls['email'].touched">El email no es válido</span>
-        </div>
-        <div>
-            <label for="phoneNumber">Teléfono</label>
-            <input type="text" formControlName="phoneNumber" id="phoneNumber">
-            <span *ngIf="newClientForm.controls['phoneNumber'].invalid && newClientForm.controls['phoneNumber'].touched">El teléfono es requerido</span>
-        </div>
-        <div>
-            <label for="emergencyPhoneNumber">Teléfono de emergencia</label>
-            <input type="text" formControlName="emergencyPhoneNumber" id="emergencyPhoneNumber">
-            <span *ngIf="newClientForm.controls['emergencyPhoneNumber'].invalid && newClientForm.controls['emergencyPhoneNumber'].touched">El teléfono de emergencia es requerido</span>
-        </div>
-        <div>
-            <label for="birthday">Fecha de nacimiento</label>
-            <input type="date" formControlName="birthday" id="birthday">
-            <span *ngIf="newClientForm.controls['birthday'].invalid && newClientForm.controls['birthday'].touched">La fecha de nacimiento es requerida</span>
-        </div>
-        <div><label>Género</label>
-            <input type="radio" formControlName="gender" id="genderM" [value]="Gender.M"> Masculino
-            <input type="radio" formControlName="gender" id="genderF" [value]="Gender.F"> Femenino
-            <input type="radio" formControlName="gender" id="genderO" [value]="Gender.O"> Otro
-        </div>
-        <div>
-            <label for="streetAddress"></label>
-            <input type="text" formControlName="streetAddress" id="streetAddress">
-            <span *ngIf="newClientForm.controls['streetAddress'].invalid && newClientForm.controls['streetAddress'].touched">La dirección es requerida</span>
-        </div>
-        <div>
-            <label for="addressNumber"></label>
-            <input type="text" formControlName="addressNumber" id="addressNumber">
-            <span *ngIf="newClientForm.controls['addressNumber'].invalid && newClientForm.controls['addressNumber'].touched">El número de dirección es requerido</span>
-        </div>
-        <div>
-            <label for="colony"></label>
-            <input type="text" formControlName="colony" id="colony">
-            <span *ngIf="newClientForm.controls['colony'].invalid && newClientForm.controls['colony'].touched">La colonia es requerida</span>
-        </div>
-        <div>
-            <label for="city"></label>
-            <input type="text" formControlName="city" id="city">
-            <span *ngIf="newClientForm.controls['city'].invalid && newClientForm.controls['city'].touched">La ciudad es requerida</span>
-        </div>
-        <div>
-            <label for="state"></label>
-            <input type="text" formControlName="state" id="state">
-            <span *ngIf="newClientForm.controls['state'].invalid && newClientForm.controls['state'].touched">El estado es requerido</span>
-        </div>
-        <div>
-            <label for="zipCode"></label>
-            <input type="text" formControlName="zipCode" id="zipCode">
-            <span *ngIf="newClientForm.controls['zipCode'].invalid && newClientForm.controls['zipCode'].touched">El código postal es requerido</span>
-        </div>
-        <div>
-            <button type="button" (click)="addClient()" [disabled]="newClientForm.invalid">Agregar</button>
-            <button type="button" (click)="displayForm =!displayForm">Cancelar</button>
+        <div class="form-row">
+            <div class="col-4">
+                <label for="firstName">Nombre</label>
+                <input type="text" formControlName="firstName" id="firstName">
+                <span *ngIf="newClientForm.controls['firstName'].invalid && newClientForm.controls['firstName'].touched">El nombre es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="lastName">Apellido</label>
+                <input type="text" formControlName="lastName" id="lastName">
+                <span *ngIf="newClientForm.controls['lastName'].invalid && newClientForm.controls['lastName'].touched">El apellido es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="email">Email</label>
+                <input type="email" formControlName="email" id="email">
+                <span *ngIf="newClientForm.controls['email'].invalid && newClientForm.controls['email'].touched">El email es requerido</span>
+                <span *ngIf="newClientForm.controls['email'].errors?.email && newClientForm.controls['email'].touched">El email no es válido</span>
+            </div>
+            <div class="col-4">
+                <label for="phoneNumber">Teléfono</label>
+                <input type="text" formControlName="phoneNumber" id="phoneNumber">
+                <span *ngIf="newClientForm.controls['phoneNumber'].invalid && newClientForm.controls['phoneNumber'].touched">El teléfono es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="emergencyPhoneNumber">Teléfono de emergencia</label>
+                <input type="text" formControlName="emergencyPhoneNumber" id="emergencyPhoneNumber">
+                <span *ngIf="newClientForm.controls['emergencyPhoneNumber'].invalid && newClientForm.controls['emergencyPhoneNumber'].touched">El teléfono de emergencia es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="birthday">Fecha de nacimiento</label>
+                <input type="date" formControlName="birthday" id="birthday">
+                <span *ngIf="newClientForm.controls['birthday'].invalid && newClientForm.controls['birthday'].touched">La fecha de nacimiento es requerida</span>
+            </div>
+            <div class="col-4"><label>Género</label>
+                <input type="radio" formControlName="gender" id="genderM" [value]="Gender.M"> Masculino
+                <input type="radio" formControlName="gender" id="genderF" [value]="Gender.F"> Femenino
+                <input type="radio" formControlName="gender" id="genderO" [value]="Gender.O"> Otro
+            </div>
+            <div class="col-4">
+                <label for="streetAddress">Calle</label>
+                <input type="text" formControlName="streetAddress" id="streetAddress">
+                <span *ngIf="newClientForm.controls['streetAddress'].invalid && newClientForm.controls['streetAddress'].touched">La dirección es requerida</span>
+            </div>
+            <div class="col-4">
+                <label for="addressNumber">Número</label>
+                <input type="text" formControlName="addressNumber" id="addressNumber">
+                <span *ngIf="newClientForm.controls['addressNumber'].invalid && newClientForm.controls['addressNumber'].touched">El número de dirección es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="colony">Colonia</label>
+                <input type="text" formControlName="colony" id="colony">
+                <span *ngIf="newClientForm.controls['colony'].invalid && newClientForm.controls['colony'].touched">La colonia es requerida</span>
+            </div>
+            <div class="col-4">
+                <label for="city">Ciudad</label>
+                <input type="text" formControlName="city" id="city">
+                <span *ngIf="newClientForm.controls['city'].invalid && newClientForm.controls['city'].touched">La ciudad es requerida</span>
+            </div>
+            <div class="col-4">
+                <label for="state">Estado</label>
+                <input type="text" formControlName="state" id="state">
+                <span *ngIf="newClientForm.controls['state'].invalid && newClientForm.controls['state'].touched">El estado es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="zipCode">Código postal</label>
+                <input type="text" formControlName="zipCode" id="zipCode">
+                <span *ngIf="newClientForm.controls['zipCode'].invalid && newClientForm.controls['zipCode'].touched">El código postal es requerido</span>
+            </div>
+            <br>
+            <div class="">
+                <button type="button" class="btn btn-primary" (click)="addClient()" [disabled]="newClientForm.invalid">Agregar</button>
+                <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
+            </div>
         </div>
     </form>
-
 </div>
+
