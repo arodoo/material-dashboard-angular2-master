@@ -17,7 +17,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     HttpClientModule,
     ComponentsModule,
     RouterModule,
-    AppRoutingModule, 
+    AppRoutingModule,
     NgxPaginationModule,
   ],
   declarations: [

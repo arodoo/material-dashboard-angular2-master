@@ -1,0 +1,102 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">{{title}}</h4>
+                        <p class="card-category"> PowerGym </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <input type="text" [(ngModel)]="filter" placeholder="Buscar...">
+                            <button type="button" (click)="showNewPlanForm()" class="btn btn-primary">Agregar</button>
+                            <br>
+                            <table class="table">
+                                <thead class=" text-primary">
+                                <th>
+                                    Plan
+                                </th>
+                                <th>
+                                    Precio
+                                </th>
+                                <th>
+                                    Descripción
+                                </th>
+                                <th>
+                                    Número de días
+                                </th>
+                                <th>
+                                    Acciones
+                                </th>
+                                </thead>
+
+                                <tbody>
+                                <tr *ngFor="let plan of plans | filter: filter | paginate: { itemsPerPage: 10, currentPage:p}">
+                                    <td>
+                                        {{plan.planName}}
+                                    </td>
+                                    <td>
+                                        {{plan.price}}
+                                    </td>
+                                    <td>
+                                        {{plan.description}}
+                                    </td>
+                                    <td>
+                                        {{plan.numDays}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" (click)="loadPlanToUpdate(plan)">
+                                            Editar
+                                        </button>
+                                        <button type="button" class="btn btn-danger" (click)="deletePlan(plan.planId)">
+                                            Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-container" [class.show]="showForm">
+    <h2>{{formTitle}}</h2>
+
+    <form [formGroup]="newPlanForm" (ngSubmit)="addOrUpdatePlan()">
+        <div class="form-row">
+            <div class="col-4">
+                <label for="planName">Nombre</label>
+                <input type="text" formControlName="planName" id="planName">
+                <span *ngIf="newPlanForm.controls['planName'].invalid && newPlanForm.controls['planName'].touched">El nombre es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="price">Precio</label>
+                <input type="number" formControlName="price" id="price">
+                <span *ngIf="newPlanForm.controls['price'].invalid && newPlanForm.controls['price'].touched">El apellido es requerido</span>
+            </div>
+            <div class="col-12">
+                <label for="description">Descripción</label>
+                <input type="text" formControlName="description" id="description">
+                <span *ngIf="newPlanForm.controls['description'].invalid && newPlanForm.controls['description'].touched">El teléfono es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="numDays">Número de días</label>
+                <input type="number" formControlName="numDays" id="numDays">
+                <span *ngIf="newPlanForm.controls['numDays'].invalid && newPlanForm.controls['numDays'].touched">El teléfono de emergencia es requerido</span>
+            </div>
+            <br>
+            <div class="">
+                <button type="submit" class="btn btn-primary" [disabled]="newPlanForm.invalid">Agregar</button>
+                <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
