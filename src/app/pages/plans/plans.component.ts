@@ -17,6 +17,7 @@ export class PlansComponent implements OnInit {
     p = 1;
     protected filter = '';
     showForm = false;
+    saveButtonTitle = 'Guardar';
 
 
     constructor(private planService: PlansService,
@@ -93,6 +94,7 @@ export class PlansComponent implements OnInit {
 
     loadPlanToUpdate(plan: Plan): void {
         this.formTitle = 'Editar plan';
+        this.saveButtonTitle = 'Actualizar';
         this.showNewPlanForm();
         this.newPlanForm.setValue({
             planId: plan.planId,

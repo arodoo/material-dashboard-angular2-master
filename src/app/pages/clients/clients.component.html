@@ -46,7 +46,11 @@
                                         {{this.isClientActive}}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" (click)="deleteClient(client.clientId)">Eliminar</button>
+                                        <button type="button" class="btn btn-danger"
+                                                (click)="deleteClient(client.clientId)">Eliminar
+                                        </button>
+                                        <button type="button" class="btn default" (click)="seeClient(client)">Ver
+                                        </button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -62,6 +66,7 @@
 </div>
 
 <div class="form-container" [class.show]="showForm">
+    <h2>{{formTitle}}</h2>
 
     <form [formGroup]="newClientForm" (ngSubmit)="addClient()">
         <div class="form-row">
@@ -96,11 +101,16 @@
                 <input type="date" formControlName="birthday" id="birthday">
                 <span *ngIf="newClientForm.controls['birthday'].invalid && newClientForm.controls['birthday'].touched">La fecha de nacimiento es requerida</span>
             </div>
-            <div class="col-4"><label>Género</label>
+            <div class="col-4">
+                <label>Género</label>
+                <br>
                 <input type="radio" formControlName="gender" id="genderM" [value]="Gender.M"> Masculino
+                <br>
                 <input type="radio" formControlName="gender" id="genderF" [value]="Gender.F"> Femenino
+                <br>
                 <input type="radio" formControlName="gender" id="genderO" [value]="Gender.O"> Otro
             </div>
+
             <div class="col-4">
                 <label for="streetAddress">Calle</label>
                 <input type="text" formControlName="streetAddress" id="streetAddress">
@@ -131,12 +141,35 @@
                 <input type="text" formControlName="zipCode" id="zipCode">
                 <span *ngIf="newClientForm.controls['zipCode'].invalid && newClientForm.controls['zipCode'].touched">El código postal es requerido</span>
             </div>
+            <div *ngIf="isSeeClientActive" class="col-4">
+                <label for="isClientActive">¿Activo?</label>
+                <input disabled type="text" formControlName="isClientActive" id="isClientActive"
+                       placeholder={{isClientActive}}>
+            </div>
             <br>
             <div class="">
-                <button type="button" class="btn btn-primary" (click)="addClient()" [disabled]="newClientForm.invalid">Agregar</button>
-                <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
+                <button *ngIf="!isSeeClientActive" type="button" class="btn btn-primary" (click)="addClient()"
+                        [disabled]="newClientForm.invalid">Agregar
+                </button>
+                <button *ngIf="!isSeeClientActive" type="button" class="btn btn-danger" (click)="cancel()">Cancelar
+                </button>
+                <button *ngIf="isSeeClientActive" type="button" style="float: left" class="btn btn-primary"
+                        (click)="addPlanToClient()" [disabled]="newClientForm.invalid">Plan
+                </button>
+                <button *ngIf="isSeeClientActive" type="button" style="float: left" class="btn btn-danger"
+                        (click)="cancel()">Cerrar
+                </button>
+
             </div>
         </div>
     </form>
 </div>
 
+
+<div class="form-container" [class.show]="showForm">
+    <h2>{{addPlanToClientTitle}}</h2>
+
+    <form [formGroup]="newAddPlanToClientForm" (ngSubmit)="addPlanToClient">
+
+    </form>
+</div>

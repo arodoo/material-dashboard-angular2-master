@@ -1,1 +1,82 @@
-<p>users works!</p>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">{{title}}</h4>
+                        <p class="card-category"> PowerGym </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <input type="text" [(ngModel)]="filter" placeholder="Buscar...">
+                            <button type="button" (click)="showNewClientForm()" class="btn btn-primary">Agregar</button>
+                            <br>
+                            <table class="table">
+                                <thead class=" text-primary">
+                                <th>
+                                    Nombre
+                                </th>
+                                <th>
+                                    Apellido
+                                </th>
+                                <th>
+                                    Ciudad
+                                </th>
+                                </thead>
+
+                                <tbody>
+                                <tr *ngFor="let user of users | filter: filter | paginate: { itemsPerPage: 10, currentPage:p}">
+                                    <td>
+                                        {{user.userName}}
+                                    </td>
+                                    <td>
+                                        {{user.email}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" (click)="deleteUser(user.userId)">
+                                            Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-container" [class.show]="showForm">
+    <h2>{{formTitle}}</h2>
+
+    <form [formGroup]="newUserForm" (ngSubmit)="addUser()">
+        <div class="form-row">
+            <div class="col-4">
+                <label for="userName">Nombre</label>
+                <input type="text" id="userName" formControlName="userName" placeholder="Nombre">
+                <span *ngIf="newUserForm.controls['userName'].invalid && newUserForm.controls['userName'].touched">El nombre es requerido</span>
+            </div>
+            <div class="col-4">
+                <label for="email">Email</label>
+                <input type="text" id="email" formControlName="email" placeholder="Apellido">
+                <span *ngIf="newUserForm.controls['email'].invalid && newUserForm.controls['email'].touched">El email es requerido</span>
+                <span *ngIf="newUserForm.controls['email'].errors?.email && newUserForm.controls['email'].touched">El email no es válido</span>
+            </div>
+            <div class="col-4">
+                <label for="passwordHash">Contraseña</label>
+                <input type="password" id="passwordHash" formControlName="passwordHash"
+                       placeholder="Contraseña">
+                <span *ngIf="newUserForm.controls['passwordHash'].invalid && newUserForm.controls['passwordHash'].touched">La contraseña es requerida</span>
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Agregar</button>
+            <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
+        </div>
+    </form>
+</div>

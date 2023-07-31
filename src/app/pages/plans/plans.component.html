@@ -93,7 +93,8 @@
             </div>
             <br>
             <div class="">
-                <button type="submit" class="btn btn-primary" [disabled]="newPlanForm.invalid">Agregar</button>
+                <button type="submit" class="btn btn-primary"
+                        [disabled]="newPlanForm.invalid">{{saveButtonTitle}}</button>
                 <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
             </div>
         </div>
