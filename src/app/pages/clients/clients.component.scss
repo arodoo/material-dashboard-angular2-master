@@ -5,6 +5,27 @@ input {
   background-color: #f0f0f0;
 }
 
+.form-add-plan-to-client{
+  display: none;
+  position: fixed;
+  z-index: 10;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: white;
+  transform: translateY(-100%);
+  transition: transform .5s ease-in-out;
+}
+
+.form-add-plan-to-client.show {
+  transform: translateY(0);
+  display: block;
+}
+
 /* Creamos una clase para darle estilo al div que contiene el formulario */
 .form-container {
   /* Usamos position: fixed para posicionarlo de forma fija en la pantalla */
@@ -52,3 +73,6 @@ input {
   width: 8rem;
 }
 
+#addPlanToClientButton{
+
+}

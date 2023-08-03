@@ -24,9 +24,9 @@
                                     Ciudad
                                 </th>
                                 <th>
-                                    ¿Activo?
+                                    Activo
                                 </th>
-                                <th>
+                                <th style="text-align: center">
                                     Acciones
                                 </th>
                                 </thead>
@@ -43,13 +43,16 @@
                                         {{client.city}}
                                     </td>
                                     <td>
-                                        {{this.isClientActive}}
+                                        {{client.isActive ? 'Si' : 'No'}}
                                     </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger"
-                                                (click)="deleteClient(client.clientId)">Eliminar
+                                    <td style="padding: 2rem">
+<!--                                        <button type="button" class="btn btn-danger"-->
+<!--                                                (click)="deleteClient(client.clientId)">Eliminar-->
+<!--                                        </button>-->
+                                        <button type="button" class="btn btn-warning" (click)="seeClient(client)">Ver
                                         </button>
-                                        <button type="button" class="btn default" (click)="seeClient(client)">Ver
+                                        <button type="button" id="addPlanToClientButton" class="btn btn-primary"
+                                                (click)="showNewAddPlanToClientForm(client)">Plan
                                         </button>
                                     </td>
                                 </tr>
@@ -65,9 +68,11 @@
     </div>
 </div>
 
-<div class="form-container" [class.show]="showForm">
+<div class="form-container" id="showClientTable" [class.show]="showForm">
     <h2>{{formTitle}}</h2>
-
+    <button *ngIf="isSeeClientActive" type="button" style="float: right" class="btn btn-danger"
+            (click)="cancel()">Cerrar
+    </button>
     <form [formGroup]="newClientForm" (ngSubmit)="addClient()">
         <div class="form-row">
             <div class="col-4">
@@ -142,9 +147,9 @@
                 <span *ngIf="newClientForm.controls['zipCode'].invalid && newClientForm.controls['zipCode'].touched">El código postal es requerido</span>
             </div>
             <div *ngIf="isSeeClientActive" class="col-4">
-                <label for="isClientActive">¿Activo?</label>
-                <input disabled type="text" formControlName="isClientActive" id="isClientActive"
-                       placeholder={{isClientActive}}>
+                <label for="isClientActive">Estado del plan</label>
+                <input disabled type="text" id="isClientActive"
+                       placeholder={{isClientPlanActiveTxt}}>
             </div>
             <br>
             <div class="">
@@ -153,12 +158,6 @@
                 </button>
                 <button *ngIf="!isSeeClientActive" type="button" class="btn btn-danger" (click)="cancel()">Cancelar
                 </button>
-                <button *ngIf="isSeeClientActive" type="button" style="float: left" class="btn btn-primary"
-                        (click)="addPlanToClient()" [disabled]="newClientForm.invalid">Plan
-                </button>
-                <button *ngIf="isSeeClientActive" type="button" style="float: left" class="btn btn-danger"
-                        (click)="cancel()">Cerrar
-                </button>
 
             </div>
         </div>
@@ -166,10 +165,47 @@
 </div>
 
 
-<div class="form-container" [class.show]="showForm">
+<div class="form-container" id="addClientForm" [class.show]="showAddPlanToClientForm">
     <h2>{{addPlanToClientTitle}}</h2>
 
-    <form [formGroup]="newAddPlanToClientForm" (ngSubmit)="addPlanToClient">
-
+    <form [formGroup]="newAddPlanToClientForm" (ngSubmit)="addPlanToClient()">
+        <div class="form-row">
+            <div class="col-8">
+                <mat-form-field appearance="fill">
+                    <mat-label>Selecciona el cliente</mat-label>
+                    <br>
+                    <mat-select formControlName="client" [style]="getSelectClientStyle()">
+                        <mat-option [value]="clientPlan">{{addPlanToClientClientOptions}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-8">
+                <mat-form-field appearance="fill">
+                    <mat-label>Selecciona el plan</mat-label>
+                    <br>
+                    <mat-select formControlName="plan" [style]="getSelectPlanStyle()">
+                        <mat-option *ngFor="let plan of plans" [value]="plan">{{plan.numDays}} días
+                            , {{plan.price}}$
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-8">
+                <mat-form-field appearance="fill">
+                    <mat-label>Selecciona el usuario</mat-label>
+                    <br>
+                    <mat-select formControlName="user" [style]="getSelectUserStyle()">
+                        <mat-option *ngFor="let user of users" [value]="user">{{user.email}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="">
+            <button type="submit" class="btn btn-primary"
+                    [disabled]="newAddPlanToClientForm.invalid">Agregar
+            </button>
+            <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar
+            </button>
+        </div>
     </form>
 </div>

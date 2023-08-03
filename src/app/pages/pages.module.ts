@@ -8,6 +8,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {PlansComponent} from './plans/plans.component';
 import {BaseComponent} from './base/base.component';
 import {UsersComponent} from './users/users.component';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import { ClientHasPlanComponent } from './client-has-plan/client-has-plan.component';
 
 
 @NgModule({
@@ -16,14 +19,17 @@ import {UsersComponent} from './users/users.component';
         FilterPipe,
         PlansComponent,
         BaseComponent,
-        UsersComponent
+        UsersComponent,
+        ClientHasPlanComponent
     ],
     imports: [
         CommonModule,
         NgxPaginationModule,
         FormsModule,
         ReactiveFormsModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatInputModule,
+        MatSelectModule
     ],
     exports: [
         ClientsComponent,

@@ -1,0 +1,72 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">{{title}}</h4>
+                        <p class="card-category"> PowerGym </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <input type="text" [(ngModel)]="filter" placeholder="Buscar por fecha">
+<!--                            <button type="button" (click)="showNewClientForm()" class="btn btn-primary">Agregar</button>-->
+                            <br>
+                            <table class="table">
+                                <thead class=" text-primary">
+                                <th>
+                                    Propietario
+                                </th>
+                                <th>
+                                    Responsable
+                                </th>
+                                <th>
+                                    Comenzó
+                                </th>
+                                <th>
+                                    Termina
+                                </th>
+                                <th>
+                                    ¿Activo?
+                                </th>
+                                <th style="text-align: center">
+                                    Acciones
+                                </th>
+                                </thead>
+
+                                <tbody>
+                                <tr *ngFor="let clientHasPlan of clientHasPlans | filter: filter | paginate: { itemsPerPage: 20, currentPage:p}">
+                                    <td>
+                                        {{clientHasPlan.client.firstName}}
+                                    </td>
+                                    <td>
+                                        {{clientHasPlan.user.email}}
+                                    </td>
+                                    <td>
+                                        {{clientHasPlan.startDate | date: 'dd/MM/yyyy'}}
+                                    <td>
+                                        {{clientHasPlan.endDate | date: 'dd/MM/yyyy'}}
+                                    </td>
+                                    <td>
+                                        {{this.clientHasPlan.isActive ? 'Si' : 'No'}}
+                                    </td>
+                                    <td style="padding: 2rem">
+                                        <button type="button" class="btn btn-danger"
+                                                (click)="deleteClientHasPlanEntry(clientHasPlan.contractId)">Eliminar
+                                        </button>
+<!--                                        <button type="button" id="addPlanToClientButton" class="btn btn-primary"-->
+<!--                                                (click)="showClientHasPlanDetails(clientHasPlan)">Detalles-->
+<!--                                        </button>-->
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

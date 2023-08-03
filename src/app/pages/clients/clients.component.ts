@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Client} from 'app/models/client';
+import {Client, Gender} from 'app/models/client';
 import {User} from 'app/models/user';
 import {Plan} from 'app/models/plan';
-import {Gender} from '../../models/client';
 import {ClientsService} from 'app/services/clients.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {UsersService} from '../../services/users.service';
 import {PlansService} from '../../services/plans.service';
+import {ClientHasPlan} from '../../models/client-has-plan';
+import {ClientHasPlansService} from '../../services/client-has-plans.service';
+import {lastValueFrom} from 'rxjs';
 
 @Component({
     selector: 'app-clients',
@@ -21,24 +23,70 @@ export class ClientsComponent implements OnInit {
 
     title = 'Clientes';
     formTitle = 'Nuevo cliente';
-    addPlanToClientTitle = 'Agregar plan';
+    addPlanToClientTitle = '';
+    addPlanToClientClientOptions = '';
 
     clients: Client[];
     users: User[];
     plans: Plan[];
+    loadedClient: Client;
+    clientPlan: Client;
+
+    clientHasPlan: ClientHasPlan =
+        {
+            contractId: 0,
+            client: {
+                clientId: 0,
+                firstName: '',
+                lastName: '',
+                email: '',
+                phoneNumber: '',
+                emergencyPhoneNumber: '',
+                birthday: null,
+                gender: Gender.M,
+                isActive: true,
+                streetAddress: '',
+                addressNumber: '',
+                colony: '',
+                city: '',
+                state: '',
+                zipCode: '',
+            },
+            plan: {
+                planId: 0,
+                planName: '',
+                description: '',
+                price: 0,
+                numDays: 0,
+            },
+            user: {
+                userId: 0,
+                userName: '',
+                passwordHash: '',
+                email: '',
+            },
+            contractDate: null,
+            startDate: null,
+            endDate: null,
+            isActive: null,
+        };
 
     Gender = Gender;
     p = 1;
-    isClientActive: String;
+    isClientPlanActiveTxt: String;
     protected filter = '';
     currentDate = new Date();
+
     showForm = false;
+    showAddPlanToClientForm = false;
+
     isSeeClientActive = false;
 
 
     constructor(private clientService: ClientsService,
                 private userService: UsersService,
                 private planService: PlansService,
+                private clientHasPlanService: ClientHasPlansService,
                 private fb: FormBuilder,
                 private snackBar: MatSnackBar) {
     }
@@ -51,12 +99,6 @@ export class ClientsComponent implements OnInit {
                 (error) => {
                     alert(error);
                 });
-            // tslint:disable-next-line:triple-equals
-            if (this.isClientActive != 'true') {
-                this.isClientActive = 'Activo';
-            } else {
-                this.isClientActive = 'Inactivo';
-            }
         } catch (error) {
             alert(error);
         }
@@ -86,7 +128,7 @@ export class ClientsComponent implements OnInit {
             emergencyPhoneNumber: ['', Validators.pattern('[0-9]{10}')], // Assuming a 10-digit emergency phone number
             birthday: [this.currentDate, Validators.required],
             gender: [Gender.M, Validators.required],
-            isActive: [this.isClientActive],
+            isActive: [true],
             streetAddress: ['', Validators.required],
             addressNumber: ['', Validators.required],
             colony: ['', Validators.required],
@@ -94,17 +136,39 @@ export class ClientsComponent implements OnInit {
             state: ['', Validators.required],
             zipCode: ['', Validators.required],
         });
+
+        this.newAddPlanToClientForm = this.fb.group({
+            contractId: [''],
+            client: ['', Validators.required],
+            plan: ['', Validators.required],
+            user: ['', Validators.required],
+            contractDate: [''],
+            startDate: [''],
+            endDate: [''],
+            isActive: [''],
+        });
     }
 
 
     showNewClientForm() {
         this.showForm = true;
-        console.log(this.showForm);
+        // console.log(this.showForm);
+    }
+
+    showNewAddPlanToClientForm(client: Client) {
+        this.showAddPlanToClientForm = true;
+        this.clientPlan = client;
+        this.addPlanToClientTitle = 'Agregar plan a ' + this.clientPlan.firstName + ' ' + this.clientPlan.lastName;
+        this.addPlanToClientClientOptions = this.clientPlan.firstName;
+        // console.log(this.clientPlan);
     }
 
     cancel() {
         this.showForm = false;
         this.resetForm();
+        this.showAddPlanToClientForm = false;
+        this.resetAddPlanToClientForm();
+
         this.isSeeClientActive = false;
         this.formTitle = 'Nuevo cliente';
         this.enableForm();
@@ -137,8 +201,43 @@ export class ClientsComponent implements OnInit {
         });
     }
 
+    addPlanToClient() {
+        let clientId, planId, userId;
+        try {
+            clientId = this.newAddPlanToClientForm.value.client.clientId;
+            planId = this.newAddPlanToClientForm.value.plan.planId;
+            userId = this.newAddPlanToClientForm.value.user.userId;
+        } catch (e) {
+            console.log(e);
+        }
+        console.log(clientId, planId, userId);
+        this.clientHasPlan.client.clientId = clientId;
+        this.clientHasPlan.plan.planId = planId;
+        this.clientHasPlan.user.userId = userId;
+        console.log(this.clientHasPlan);
+        // console.log(this.newAddPlanToClientForm.value);
+        this.clientHasPlanService.addPlanToClient(this.clientHasPlan).subscribe({
+            next: (clientHasPlan) => {
+                this.resetAddPlanToClientForm();
+                this.snackBar.open('Plan agregado', 'Cerrar', {
+                    duration: 3000
+                });
+                this.cancel();
+            },
+            error: (error) => {
+                this.snackBar.open('Error al agregar plan', 'Cerrar', {
+                    duration: 3000
+                });
+                console.log(error);
+            }
+        });
+    }
 
-    deleteClient(clientId: number) {
+
+    deleteClient(clientId
+                     :
+                     number
+    ) {
         if (confirm('¿Estás seguro de eliminar el cliente?')) {
             this.clientService.deleteClient(clientId).subscribe({
                 next: (client) => {
@@ -155,10 +254,33 @@ export class ClientsComponent implements OnInit {
         }
     }
 
-    seeClient(client: Client) {
+    async loadClient(clientId: number) {
+        const client$ = this.clientService.getClientByClientId(clientId);
+        this.loadedClient = await lastValueFrom(client$);
+    }
+
+
+    seeClient(client:
+                  Client
+    ) {
+        this.loadClient(client.clientId).then(r => {
+            this.newClientForm.patchValue(this.loadedClient);
+        });
+
         this.formTitle = client.firstName + ' ' + client.lastName;
-        this.newClientForm.patchValue(client);
+        // this.newClientForm.patchValue(client);
+        // console.log(client)
         this.disableForm();
+        // if (this.loadedClient.isActive === true) {
+        //     this.isClientPlanActive = 'Activo';
+        // } else {
+        //     this.isClientPlanActive = 'Vencido';
+        // }
+        if (this.newClientForm.value.isActive === true) {
+            this.isClientPlanActiveTxt = 'Activo';
+        } else {
+            this.isClientPlanActiveTxt = 'Vencido';
+        }
         this.isSeeClientActive = true;
         this.showForm = true;
     }
@@ -183,8 +305,43 @@ export class ClientsComponent implements OnInit {
         });
     }
 
+    resetAddPlanToClientForm() {
+        this.newAddPlanToClientForm.reset({
+            contractId: null,
+            client: '',
+            plan: '',
+            user: '',
+            contractDate: this.currentDate,
+            startDate: this.currentDate,
+            endDate: this.currentDate,
+            isActive: false,
+        });
+    }
 
-    addPlanToClient() {
-        alert('Agregando plan a cliente');
+    getSelectPlanStyle() {
+        const planMat = this.newAddPlanToClientForm.get('plan').value;
+        return {
+            'background-color': planMat ? planMat.color : 'white', // Color de fondo según el plan
+            'font-size': '16px', // Tamaño de la fuente
+            'border': '1px solid gray' // Borde del select
+        };
+    }
+
+    getSelectUserStyle() {
+        const userMat = this.newAddPlanToClientForm.get('user').value;
+        return {
+            'background-color': userMat ? userMat.color : 'white',
+            'font-size': '16px',
+            'border': '1px solid gray'
+        }
+    }
+
+    getSelectClientStyle() {
+        const clientMat = this.newAddPlanToClientForm.get('client').value;
+        return {
+            'background-color': clientMat ? clientMat.color : 'white',
+            'font-size': '16px',
+            'border': '1px solid gray'
+        }
     }
 }

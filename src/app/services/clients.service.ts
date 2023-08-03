@@ -16,8 +16,8 @@ export class ClientsService {
         return this.http.get<Client[]>(environment.backendHost + '/clients');
     }
 
-    public getClientByClientLastName(lastName: string): Observable<Client> {
-        return this.http.get<Client>(environment.backendHost + '/clients/find' + lastName);
+    public getClientByClientId(clientId: number): Observable<Client> {
+        return this.http.get<Client>(environment.backendHost + '/clients/find/' + clientId);
     }
 
     public createClient(client: Client): Observable<Client> {

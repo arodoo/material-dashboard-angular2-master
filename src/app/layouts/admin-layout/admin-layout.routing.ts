@@ -11,6 +11,7 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { ClientsComponent } from 'app/pages/clients/clients.component';
 import {PlansComponent} from '../../pages/plans/plans.component';
 import {UsersComponent} from '../../pages/users/users.component';
+import {ClientHasPlanComponent} from '../../pages/client-has-plan/client-has-plan.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -66,5 +67,6 @@ export const AdminLayoutRoutes: Routes = [
 
     { path: 'clientes', component: ClientsComponent },
     {path: 'planes', component: PlansComponent},
-    {path: 'usuarios', component: UsersComponent}
+    {path: 'usuarios', component: UsersComponent},
+    {path: 'client-has-plans', component: ClientHasPlanComponent}
 ];

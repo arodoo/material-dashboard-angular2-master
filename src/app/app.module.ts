@@ -8,6 +8,7 @@ import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     RouterModule,
     AppRoutingModule,
     NgxPaginationModule,
+    MatSelectModule,
   ],
   declarations: [
     AppComponent,
