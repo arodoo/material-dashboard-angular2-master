@@ -63,7 +63,7 @@
                             </table>
                         </div>
                     </div>
-                    <router-outlet class="card-body" (activate)="isChildLoaded = true"
+                    <router-outlet *ngIf="isChildLoaded" class="card-body" (activate)="isChildLoaded = true"
                                    (deactivate)="isChildLoaded = false"></router-outlet>
                 </div>
             </div>

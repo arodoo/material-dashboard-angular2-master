@@ -156,7 +156,6 @@ export class ClientsComponent implements OnInit {
 
     showNewClientForm() {
         this.showForm = true;
-        // console.log(this.showForm);
     }
 
     showNewAddPlanToClientForm(client: Client) {
@@ -164,7 +163,6 @@ export class ClientsComponent implements OnInit {
         this.clientPlan = client;
         this.addPlanToClientTitle = 'Agregar plan a ' + this.clientPlan.firstName + ' ' + this.clientPlan.lastName;
         this.addPlanToClientClientOptions = this.clientPlan.firstName;
-        // console.log(this.clientPlan);
     }
 
     cancel() {
@@ -214,12 +212,9 @@ export class ClientsComponent implements OnInit {
         } catch (e) {
             console.log(e);
         }
-        console.log(clientId, planId, userId);
         this.clientHasPlan.client.clientId = clientId;
         this.clientHasPlan.plan.planId = planId;
         this.clientHasPlan.user.userId = userId;
-        console.log(this.clientHasPlan);
-        // console.log(this.newAddPlanToClientForm.value);
         this.clientHasPlanService.addPlanToClient(this.clientHasPlan).subscribe({
             next: (clientHasPlan) => {
                 this.resetAddPlanToClientForm();
@@ -274,7 +269,7 @@ export class ClientsComponent implements OnInit {
             this.newClientForm.patchValue(this.loadedClient);
         });
         this.clientId = client.clientId;
-        console.log(this.clientId);
+        // console.log(this.clientId);
         this.formTitle = client.firstName + ' ' + client.lastName;
         this.disableForm();
         if (this.newClientForm.value.isActive === true) {
@@ -348,8 +343,9 @@ export class ClientsComponent implements OnInit {
 
 
     onLoadRecord() {
+        this.cancel();
         this.title = 'Historial de ' + this.loadedClient.firstName + ' ' + this.loadedClient.lastName;
         this.isChildLoaded = true;
-        this.cancel();
+        console.log(this.clientId);
     }
 }
