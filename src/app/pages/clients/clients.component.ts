@@ -268,14 +268,7 @@ export class ClientsComponent implements OnInit {
         });
 
         this.formTitle = client.firstName + ' ' + client.lastName;
-        // this.newClientForm.patchValue(client);
-        // console.log(client)
         this.disableForm();
-        // if (this.loadedClient.isActive === true) {
-        //     this.isClientPlanActive = 'Activo';
-        // } else {
-        //     this.isClientPlanActive = 'Vencido';
-        // }
         if (this.newClientForm.value.isActive === true) {
             this.isClientPlanActiveTxt = 'Activo';
         } else {

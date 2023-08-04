@@ -11,6 +11,7 @@ import {UsersComponent} from './users/users.component';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { ClientHasPlanComponent } from './client-has-plan/client-has-plan.component';
+import {ClientsRecordComponent} from './clients/clients-record/clients-record.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ClientHasPlanComponent } from './client-has-plan/client-has-plan.compon
         PlansComponent,
         BaseComponent,
         UsersComponent,
-        ClientHasPlanComponent
+        ClientHasPlanComponent,
+        ClientsRecordComponent
     ],
     imports: [
         CommonModule,
