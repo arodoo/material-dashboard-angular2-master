@@ -73,6 +73,7 @@ export class ClientsComponent implements OnInit {
 
     Gender = Gender;
     p = 1;
+
     isClientPlanActiveTxt: String;
     protected filter = '';
     currentDate = new Date();
@@ -81,6 +82,8 @@ export class ClientsComponent implements OnInit {
     showAddPlanToClientForm = false;
 
     isSeeClientActive = false;
+    clientId: number;
+    isChildLoaded = false;
 
 
     constructor(private clientService: ClientsService,
@@ -92,6 +95,7 @@ export class ClientsComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.isChildLoaded = false;
         try {
             this.clientService.getAllClients().subscribe((clients) => {
                     this.clients = clients;
@@ -259,6 +263,9 @@ export class ClientsComponent implements OnInit {
         this.loadedClient = await lastValueFrom(client$);
     }
 
+    showClientRecord() {
+
+    }
 
     seeClient(client:
                   Client
@@ -266,7 +273,8 @@ export class ClientsComponent implements OnInit {
         this.loadClient(client.clientId).then(r => {
             this.newClientForm.patchValue(this.loadedClient);
         });
-
+        this.clientId = client.clientId;
+        console.log(this.clientId);
         this.formTitle = client.firstName + ' ' + client.lastName;
         this.disableForm();
         if (this.newClientForm.value.isActive === true) {
@@ -336,5 +344,12 @@ export class ClientsComponent implements OnInit {
             'font-size': '16px',
             'border': '1px solid gray'
         }
+    }
+
+
+    onLoadRecord() {
+        this.title = 'Historial de ' + this.loadedClient.firstName + ' ' + this.loadedClient.lastName;
+        this.isChildLoaded = true;
+        this.cancel();
     }
 }

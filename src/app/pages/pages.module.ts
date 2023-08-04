@@ -12,6 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { ClientHasPlanComponent } from './client-has-plan/client-has-plan.component';
 import {ClientsRecordComponent} from './clients/clients-record/clients-record.component';
+import {RouterLink, RouterOutlet} from '@angular/router';
 
 
 @NgModule({
@@ -31,7 +32,9 @@ import {ClientsRecordComponent} from './clients/clients-record/clients-record.co
         ReactiveFormsModule,
         MatSnackBarModule,
         MatInputModule,
-        MatSelectModule
+        MatSelectModule,
+        RouterLink,
+        RouterOutlet
     ],
     exports: [
         ClientsComponent,

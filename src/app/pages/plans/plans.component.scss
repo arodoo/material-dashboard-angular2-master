@@ -5,29 +5,22 @@ input {
   background-color: #f0f0f0;
 }
 
-/* Creamos una clase para darle estilo al div que contiene el formulario */
 .form-container {
-  /* Usamos position: fixed para posicionarlo de forma fija en la pantalla */
   position: fixed;
-  /* Usamos z-index para darle un orden de apilamiento mayor que el resto de contenido */
   z-index: 10;
-  /* Usamos top, left, right y bottom para ajustar la posición del div según queramos */
   top: 10%;
   left: 10%;
   right: 10%;
   bottom: 10%;
-  /* Usamos otras propiedades para darle forma y color al div */
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
   background-color: white;
-  /* Usamos transform y transition para aplicar un efecto de deslizamiento al div */
   transform: translateY(-100%); /* Empieza desde arriba del todo */
   transition: transform .5s ease-in-out; /* Aplica una transición suave */
   display: none; /* Por defecto no se muestra */
 }
 
-/* Creamos otra clase para cambiar el estilo del div cuando se muestra */
 .form-container.show {
   transform: translateY(0); /* Termina en su posición normal */
   display: block; /* Se muestra */

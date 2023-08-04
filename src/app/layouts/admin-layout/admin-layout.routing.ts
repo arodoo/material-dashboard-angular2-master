@@ -12,60 +12,14 @@ import { ClientsComponent } from 'app/pages/clients/clients.component';
 import {PlansComponent} from '../../pages/plans/plans.component';
 import {UsersComponent} from '../../pages/users/users.component';
 import {ClientHasPlanComponent} from '../../pages/client-has-plan/client-has-plan.component';
+import {ClientsRecordComponent} from '../../pages/clients/clients-record/clients-record.component';
 
 export const AdminLayoutRoutes: Routes = [
-    // {
-    //   path: '',
-    //   children: [ {
-    //     path: 'dashboard',
-    //     component: DashboardComponent
-    // }]}, {
-    // path: '',
-    // children: [ {
-    //   path: 'userprofile',
-    //   component: UserProfileComponent
-    // }]
-    // }, {
-    //   path: '',
-    //   children: [ {
-    //     path: 'icons',
-    //     component: IconsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'notifications',
-    //         component: NotificationsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'maps',
-    //         component: MapsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'typography',
-    //         component: TypographyComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'upgrade',
-    //         component: UpgradeComponent
-    //     }]
-    // }
     { path: 'dashboard', component: DashboardComponent },
-    // { path: 'user-profile', component: UserProfileComponent },
-    // { path: 'table-list', component: TableListComponent },
-    // { path: 'typography', component: TypographyComponent },
-    // { path: 'icons', component: IconsComponent },
-    // { path: 'maps', component: MapsComponent },
-    // { path: 'notifications', component: NotificationsComponent },
-    // { path: 'upgrade', component: UpgradeComponent },
 
-    { path: 'clientes', component: ClientsComponent },
+    { path: 'clientes', component: ClientsComponent, children: [
+            { path: 'historial/:id', component: ClientsRecordComponent }
+        ]},
     {path: 'planes', component: PlansComponent},
     {path: 'usuarios', component: UsersComponent},
     {path: 'client-has-plans', component: ClientHasPlanComponent}

@@ -1,1 +1,62 @@
-<p>clients-record works!</p>
+<div class="">
+    <div class="table-responsive">
+        <input type="text" [(ngModel)]="filter" placeholder="Buscar por fecha"><br>
+        <button type="button" (click)="goBack()" class="btn btn-danger">Regresar</button>
+        <table class="table">
+            <thead class=" text-primary">
+            <th>
+                Propietario
+            </th>
+            <th>
+                Responsable
+            </th>
+            <th>
+                Comenzó
+            </th>
+            <th>
+                Termina
+            </th>
+            <th>
+                ¿Activo?
+            </th>
+            <th style="text-align: center">
+                Acciones
+            </th>
+            </thead>
+
+            <tbody>
+<!--            <tr *ngFor="let record of records | filter: filter | paginate: { itemsPerPage: 20, currentPage:p}">-->
+<!--                <td>-->
+<!--                    {{record.client.firstName}}-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    {{record.user.email}}-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    {{record.startDate | date: 'dd/MM/yyyy'}}-->
+<!--                <td>-->
+<!--                    {{record.endDate | date: 'dd/MM/yyyy'}}-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    {{this.record.isActive ? 'Si' : 'No'}}-->
+<!--                </td>-->
+<!--                <td style="padding: 2rem">-->
+<!--                    <button type="button" class="btn btn-danger"-->
+<!--                            (click)="deleteRecord(record.contractId)">Eliminar-->
+<!--                    </button>-->
+<!--                </td>-->
+<!--            </tr>-->
+            </tbody>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-<div class="main-content">
+<div class="main-content" id="table-container">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -7,10 +7,11 @@
                         <h4 class="card-title ">{{title}}</h4>
                         <p class="card-category"> PowerGym </p>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" *ngIf="!isChildLoaded">
                         <div class="table-responsive">
                             <input type="text" [(ngModel)]="filter" placeholder="Buscar...">
-                            <button type="button" (click)="showNewClientForm()" class="btn btn-primary">Agregar</button>
+                            <button type="button" (click)="showNewClientForm()" class="btn btn-primary">Agregar
+                            </button>
                             <br>
                             <table class="table">
                                 <thead class=" text-primary">
@@ -46,10 +47,11 @@
                                         {{client.isActive ? 'Si' : 'No'}}
                                     </td>
                                     <td style="padding: 2rem">
-<!--                                        <button type="button" class="btn btn-danger"-->
-<!--                                                (click)="deleteClient(client.clientId)">Eliminar-->
-<!--                                        </button>-->
-                                        <button type="button" class="btn btn-warning" (click)="seeClient(client)">Ver
+                                        <!--                                        <button type="button" class="btn btn-danger"-->
+                                        <!--                                                (click)="deleteClient(client.clientId)">Eliminar-->
+                                        <!--                                        </button>-->
+                                        <button type="button" class="btn btn-warning" (click)="seeClient(client)">
+                                            Ver
                                         </button>
                                         <button type="button" id="addPlanToClientButton" class="btn btn-primary"
                                                 (click)="showNewAddPlanToClientForm(client)">Plan
@@ -61,18 +63,22 @@
                             </table>
                         </div>
                     </div>
-
+                    <router-outlet class="card-body" (activate)="isChildLoaded = true"
+                                   (deactivate)="isChildLoaded = false"></router-outlet>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <div class="form-container" id="showClientTable" [class.show]="showForm">
     <h2>{{formTitle}}</h2>
     <button *ngIf="isSeeClientActive" type="button" style="float: right" class="btn btn-danger"
             (click)="cancel()">Cerrar
     </button>
+    <button *ngIf="isSeeClientActive" type="button" style="float: right" class="btn btn-warning"
+            (click)="onLoadRecord()" routerLink="/clientes/historial/{{clientId}}">Historial
+    </button>
+
     <form [formGroup]="newClientForm" (ngSubmit)="addClient()">
         <div class="form-row">
             <div class="col-4">
@@ -163,8 +169,6 @@
         </div>
     </form>
 </div>
-
-
 <div class="form-container" id="addClientForm" [class.show]="showAddPlanToClientForm">
     <h2>{{addPlanToClientTitle}}</h2>
 
@@ -209,3 +213,4 @@
         </div>
     </form>
 </div>
+
