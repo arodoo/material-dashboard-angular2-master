@@ -1,4 +1,4 @@
-<div class="main-content">
+<div class="main-content" id="entries-container" [class.show]="showEntries">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <input type="text" [(ngModel)]="searchTerms" placeholder="Buscar por fecha">
-                            <button type="button" (click)="showNewEntryForm()" class="btn btn-primary">Registrar
+                            <button type="button" (click)="showNewEntryTable()" class="btn btn-primary">Registrar
                                 entrada
                             </button>
                             <br>
@@ -30,7 +30,7 @@
                                 <tbody>
                                 <tr *ngFor="let entry of entries | filter: searchTerms | paginate: { itemsPerPage: 10, currentPage:p}">
                                     <td>
-                                        {{entry.client.firstName}} {{entry.client.lastName}}
+                                        {{entry.entryId}} {{entry.client.lastName}}
                                     </td>
                                     <td>
                                         {{entry.entryDate | date: 'EEEE dd/MM/yyyy HH:mm:ss'}}
@@ -54,41 +54,48 @@
     </div>
 </div>
 
-<div class="form-container" id="addPlanToClientForm" [class.show]="showForm">
+<div class="form-container" id="addPlanToClientForm" [class.show]="showForm" style="overflow: auto;">
     <h2>{{newEntryTitle}}</h2>
+    <div class="card-body" *ngIf="showForm">
+        <div class="table-responsive">
+            <input type="text" [(ngModel)]="filter" placeholder="Buscar...">
+            <button type="button" (click)="cancel()" class="btn btn-danger">Volver</button>
+                <table class="table">
+                    <thead class=" text-primary">
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Apellido
+                    </th>
+                    <th>
+                        Activo
+                    </th>
+                    <th style="text-align: center">
+                        Entrada
+                    </th>
+                    </thead>
 
-    <form [formGroup]="newEntryFrom" (ngSubmit)="addEntry()">
-        <div class="form-row">
-            <!--            <div class="col-8">-->
-            <!--                <mat-form-field appearance="fill">-->
-            <!--                    <mat-label>Tu nombre es</mat-label>-->
-            <!--                    <br>-->
-            <!--                    <mat-select formControlName="client" [style]="getSelectClientStyle()">-->
-            <!--                        <mat-option *ngFor="let client of clients" [value]="client">-->
-            <!--                            {{client.firstName}}-->
-            <!--                        </mat-option>-->
-            <!--                    </mat-select>-->
-            <!--                </mat-form-field>-->
-            <!--            </div>-->
-            <div class="col-8">
-                <mat-form-field appearance="fill">
-                    <mat-label>Tu nombre es</mat-label>
-                    <input type="text" matInput formControlName="client" [formControl]="search" [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let client of clients | filter:search.value" [value]="client">
-                            {{client.firstName}} {{client.lastName}}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
-            </div>
-
+                    <tbody>
+                    <tr *ngFor="let client of clients | filter: filter | paginate: { itemsPerPage: 10, currentPage:p}">
+                        <td>
+                            {{client.firstName}}
+                        </td>
+                        <td>
+                            {{client.lastName}}
+                        </td>
+                        <td>
+                            {{client.isActive ? 'Si' : 'No'}}
+                        </td>
+                        <td style="padding: 2rem">
+                            <button type="button" id="addPlanToClientButton" class="btn btn-primary"
+                                    (click)="registerEntry(client.clientId)">Registrar
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </table>
         </div>
-        <div class="">
-            <button type="submit" class="btn btn-primary"
-                    [disabled]="newEntryFrom.invalid">Agregar
-            </button>
-            <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar
-            </button>
-        </div>
-    </form>
+    </div>
 </div>

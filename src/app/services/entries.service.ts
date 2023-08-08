@@ -16,8 +16,8 @@ export class EntriesService {
         return this.http.get<Entry[]>(environment.backendHost + '/entries');
     }
 
-    public addEntry(entry: Entry): Observable<Entry> {
-        return this.http.post<Entry>(environment.backendHost + '/entries', entry);
+    public addEntry(clientId: number): Observable<Entry> {
+        return this.http.get<Entry>(environment.backendHost + '/entries/add/' + clientId);
     }
 
     public deleteEntry(entryId: number): Observable<Entry> {
