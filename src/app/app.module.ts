@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MatSelectModule} from '@angular/material/select';
+import { FilterByFirstNamePipe } from './filter-by-first-name.pipe';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -21,10 +23,12 @@ import {MatSelectModule} from '@angular/material/select';
     AppRoutingModule,
     NgxPaginationModule,
     MatSelectModule,
+    MatAutocompleteModule,
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
+    FilterByFirstNamePipe,
   ],
   providers: [],
   bootstrap: [AppComponent]

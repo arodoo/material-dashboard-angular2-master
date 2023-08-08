@@ -19,6 +19,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {PagesModule} from '../../pages/pages.module';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import {PagesModule} from '../../pages/pages.module';
         MatTooltipModule,
         NgxPaginationModule,
         PagesModule,
+        MatAutocompleteModule,
     ],
   declarations: [
     DashboardComponent,

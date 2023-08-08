@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {EntriesService} from '../services/entries.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Entry} from '../models/entry';
 import {Client} from '../models/client';
 import {ClientsService} from '../services/clients.service';
+import {concatAll, Observable, of, switchMap, toArray} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {filter} from 'rxjs/operators';
 
 @Component({
     selector: 'app-dashboard',
@@ -16,11 +19,14 @@ export class DashboardComponent implements OnInit {
     title = 'Entradas';
 
     p = 1;
-    protected filter = '';
+    searchTerms = '';
 
     entries: Entry[];
     clients: Client[];
 
+    records: Observable<Entry[]>;
+    search = new FormControl();
+    filteredClients: Observable<Entry[]>;
 
 
     newEntryFrom: FormGroup;
@@ -39,6 +45,7 @@ export class DashboardComponent implements OnInit {
         this.entryService.getAllEntries().subscribe({
             next: (entries) => {
                 this.entries = entries;
+                console.log(entries);
             },
             error: (error) => {
                 alert(error);
@@ -53,11 +60,25 @@ export class DashboardComponent implements OnInit {
             }
         });
 
+        this.filteredClients = this.search.valueChanges.pipe(
+            startWith(''),
+            switchMap(value => this._filter(value)),
+            concatAll()
+        );
+
         this.newEntryFrom = this.fb.group({
             entryId: [''],
             client: [''],
             entryDate: [''],
         });
+    }
+
+    private _filter(value: string): Observable<Entry[][]> { // Cambias el tipo de retorno por Observable<Entry[][]>
+        const filterValue = value.toLowerCase();
+        return this.records.pipe(
+            toArray(), // Usas el operador toArray para convertir el Observable en un arreglo
+            map(records => records.map(c => c.filter(e => e.client.firstName.toLowerCase().includes(filterValue))))
+        );
     }
 
     addEntry() {
