@@ -19,6 +19,7 @@ export class UsersComponent implements OnInit {
     p = 1;
     protected filter = '';
     showForm = false;
+    saveButtonTitle = 'Guardar'
 
     constructor(private userService: UsersService,
                 private fb: FormBuilder,
@@ -69,38 +70,74 @@ export class UsersComponent implements OnInit {
         });
     }
 
-    addUser() {
-        this.userService.createUser(this.newUserForm.value).subscribe({
-            next: (user) => {
-                this.users.push(user);
-                this.resetForm();
-                this.snackBar.open('Usuario creado', 'Cerrar', {
+    updateUser(user: User) {
+        this.userService.updateUser(user, user.userId).subscribe({
+            next: () => {
+                this.snackBar.open('Usuario actualizado', 'Cerrar', {
                     duration: 3000,
                 });
-                this.cancel();
             },
             error: (error) => {
-                this.snackBar.open('Error al crear el usuario', 'Cerrar', {
+                this.snackBar.open('Error al actualizar el usuario', 'Cerrar', {
                     duration: 3000,
                 });
             }
-        });
+        })
+    }
+
+    addOrUpdateUser() {
+        if (this.newUserForm.value.userId) {
+            this.updateUser(this.newUserForm.value);
+            const index = this.users.findIndex((u) => u.userId === this.newUserForm.value.userId);
+            this.users[index] = this.newUserForm.value;
+            this.cancel();
+        } else {
+
+            this.userService.createUser(this.newUserForm.value).subscribe({
+                next: (user) => {
+                    this.users.push(user);
+                    this.resetForm();
+                    this.snackBar.open('Usuario creado', 'Cerrar', {
+                        duration: 3000,
+                    });
+                    this.cancel();
+                },
+                error: (error) => {
+                    this.snackBar.open('Error al crear el usuario', 'Cerrar', {
+                        duration: 3000,
+                    });
+                }
+            });
+        }
     }
 
     deleteUser(userId: number) {
-        this.userService.deleteUser(userId).subscribe({
-            next: () => {
-                this.snackBar.open('Usuario eliminado', 'Cerrar', {
-                    duration: 3000,
-                });
-                this.users = this.users.filter((user) => user.userId !== userId);
-            },
-            error: (error) => {
-                this.snackBar.open('Error al eliminar el usuario', 'Cerrar', {
-                    duration: 3000,
-                });
-            }
-        });
+        if (confirm('¿Estás seguro de eliminar el cliente? Esto eliminará a todos los registros relacionados con el cliente')) {
+            this.userService.deleteUser(userId).subscribe({
+                next: () => {
+                    this.snackBar.open('Usuario eliminado', 'Cerrar', {
+                        duration: 3000,
+                    });
+                    this.users = this.users.filter((user) => user.userId !== userId);
+                },
+                error: (error) => {
+                    this.snackBar.open('Error al eliminar el usuario', 'Cerrar', {
+                        duration: 3000,
+                    });
+                }
+            });
+        }
     }
 
+    loadUserToUpdate(user: any) {
+        this.formTitle = 'Editar usuario';
+        this.saveButtonTitle = 'Actualizar';
+        this.showNewUserForm();
+        this.newUserForm.setValue({
+            userId: user.userId,
+            email: user.email,
+            passwordHash: user.passwordHash,
+            userName: user.userName,
+        });
+    }
 }

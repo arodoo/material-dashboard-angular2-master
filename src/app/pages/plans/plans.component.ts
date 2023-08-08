@@ -121,7 +121,7 @@ export class PlansComponent implements OnInit {
     }
 
     deletePlan(planId: any) {
-        if (confirm('¿Está seguro que desea eliminar el plan?')) {
+        if (confirm('¿Está seguro que desea eliminar el plan? Esto eliminará todos los registros de clientes con este plan')) {
             this.planService.deletePlan(planId).subscribe({
                 next: () => {
                     this.plans = this.plans.filter(plan => plan.planId !== planId);

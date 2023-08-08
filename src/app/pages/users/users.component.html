@@ -18,10 +18,10 @@
                                     Nombre
                                 </th>
                                 <th>
-                                    Apellido
+                                    Correo
                                 </th>
-                                <th>
-                                    Ciudad
+                                <th style="text-align: center">
+                                    Acciones
                                 </th>
                                 </thead>
 
@@ -34,6 +34,9 @@
                                         {{user.email}}
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-primary" (click)="loadUserToUpdate(user)">
+                                            Editar
+                                        </button>
                                         <button type="button" class="btn btn-danger" (click)="deleteUser(user.userId)">
                                             Eliminar
                                         </button>
@@ -54,7 +57,7 @@
 <div class="form-container" [class.show]="showForm">
     <h2>{{formTitle}}</h2>
 
-    <form [formGroup]="newUserForm" (ngSubmit)="addUser()">
+    <form [formGroup]="newUserForm" (ngSubmit)="addOrUpdateUser()">
         <div class="form-row">
             <div class="col-4">
                 <label for="userName">Nombre</label>
@@ -75,7 +78,7 @@
             </div>
         </div>
         <div>
-            <button type="submit" class="btn btn-primary">Agregar</button>
+            <button type="submit" class="btn btn-primary">{{saveButtonTitle}}</button>
             <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
         </div>
     </form>

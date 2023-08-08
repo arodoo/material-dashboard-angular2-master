@@ -43,8 +43,25 @@ export class ClientHasPlanComponent implements OnInit {
     }
 
     deleteClientHasPlanEntry(contractId: any) {
-
+        if (confirm('Seguro que deseas eliminar la entrada? esta acción no puede deshacerse')) {
+            this.clientHasPlanService.deleteClientHasPlan(contractId).subscribe({
+                next: (deletedPlan) => {
+                    this.clientHasPlans = this.clientHasPlans.filter((clientHasPlan) => clientHasPlan.contractId !== contractId);
+                    this.snackBar.open('Plan eliminado', 'Cerrar', {
+                        duration: 3000,
+                    });
+                },
+                error: (error) => {
+                    this.snackBar.open('Error al eliminar el plan', 'Cerrar', {
+                        duration: 3000,
+                    });
+                }
+            });
+        } else {
+            return null;
+        }
     }
+
 
     showClientHasPlanDetails(clientHasPlan: any) {
 

@@ -237,7 +237,7 @@ export class ClientsComponent implements OnInit {
                      :
                      number
     ) {
-        if (confirm('¿Estás seguro de eliminar el cliente?')) {
+        if (confirm('¿Estás seguro de eliminar el cliente? Esto eliminará a todos los registros relacionados con el cliente')) {
             this.clientService.deleteClient(clientId).subscribe({
                 next: (client) => {
                     // tslint:disable-next-line:no-shadowed-variable

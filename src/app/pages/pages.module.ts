@@ -39,7 +39,8 @@ import {RouterLink, RouterOutlet} from '@angular/router';
     exports: [
         ClientsComponent,
         PlansComponent,
-        UsersComponent
+        UsersComponent,
+        FilterPipe
     ]
 })
 export class PagesModule {
