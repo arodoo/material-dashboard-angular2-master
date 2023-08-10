@@ -23,7 +23,7 @@ export class ClientsComponent implements OnInit {
 
     title = 'Clientes';
     formTitle = 'Nuevo cliente';
-    addPlanToClientTitle = '';
+    addPlanToClientTitle = 'Nada';
     addPlanToClientClientOptions = '';
 
     clients: Client[];
@@ -84,6 +84,7 @@ export class ClientsComponent implements OnInit {
     isSeeClientActive = false;
     clientId: number;
     isChildLoaded = false;
+    isClientPlanActive = false;
 
 
     constructor(private clientService: ClientsService,
@@ -158,10 +159,32 @@ export class ClientsComponent implements OnInit {
         this.showForm = true;
     }
 
+    async verifyClientStatus(clientId: number): Promise<boolean> {
+        this.clientService.getClientByClientId(clientId).subscribe({
+            next: (client: Client) => {
+                if (client.active) {
+                    this.addPlanToClientTitle = 'Agregar plan a ' + this.clientPlan.firstName + ' ' + this.clientPlan.lastName;
+                    return true;
+                } else {
+                    this.addPlanToClientTitle = 'El cliente ' + this.clientPlan.firstName + ' ' + this.clientPlan.lastName + ' no está activo';
+                    return false;
+                }
+            },
+            error: () => {
+                this.snackBar.open('Error de sistema', 'Cerrar',
+                    {duration: 3000})
+                return false;
+            }
+        })
+        return this.isClientPlanActive;
+    }
+
     showNewAddPlanToClientForm(client: Client) {
-        this.showAddPlanToClientForm = true;
         this.clientPlan = client;
-        this.addPlanToClientTitle = 'Agregar plan a ' + this.clientPlan.firstName + ' ' + this.clientPlan.lastName;
+        this.verifyClientStatus(client.clientId).then((result) => {
+            this.isClientPlanActive = result;
+        });
+        this.showAddPlanToClientForm = true;
         this.addPlanToClientClientOptions = this.clientPlan.firstName;
     }
 
@@ -169,6 +192,7 @@ export class ClientsComponent implements OnInit {
         this.showForm = false;
         this.resetForm();
         this.showAddPlanToClientForm = false;
+        this.isClientPlanActive = false;
         this.resetAddPlanToClientForm();
 
         this.isSeeClientActive = false;
