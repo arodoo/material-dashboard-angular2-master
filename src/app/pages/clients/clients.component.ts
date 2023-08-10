@@ -44,7 +44,7 @@ export class ClientsComponent implements OnInit {
                 emergencyPhoneNumber: '',
                 birthday: null,
                 gender: Gender.M,
-                isActive: true,
+                active: true,
                 streetAddress: '',
                 addressNumber: '',
                 colony: '',
@@ -132,7 +132,7 @@ export class ClientsComponent implements OnInit {
             emergencyPhoneNumber: ['', Validators.pattern('[0-9]{10}')], // Assuming a 10-digit emergency phone number
             birthday: [this.currentDate, Validators.required],
             gender: [Gender.M, Validators.required],
-            isActive: [true],
+            active: [true],
             streetAddress: ['', Validators.required],
             addressNumber: ['', Validators.required],
             colony: ['', Validators.required],
@@ -272,7 +272,7 @@ export class ClientsComponent implements OnInit {
         // console.log(this.clientId);
         this.formTitle = client.firstName + ' ' + client.lastName;
         this.disableForm();
-        if (this.newClientForm.value.isActive === true) {
+        if (this.newClientForm.value.active === true) {
             this.isClientPlanActiveTxt = 'Activo';
         } else {
             this.isClientPlanActiveTxt = 'Vencido';
@@ -291,7 +291,7 @@ export class ClientsComponent implements OnInit {
             emergencyPhoneNumber: '',
             birthday: this.currentDate,
             gender: Gender.M,
-            isActive: true,
+            active: true,
             streetAddress: '',
             addressNumber: '',
             colony: '',

@@ -7,7 +7,7 @@ export interface Client {
   emergencyPhoneNumber: string;
   birthday: Date;
   gender: Gender;
-  isActive: boolean;
+  active: boolean;
   streetAddress: string;
   addressNumber: string;
   colony: string;
