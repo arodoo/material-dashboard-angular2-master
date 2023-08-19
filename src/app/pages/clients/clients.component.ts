@@ -23,7 +23,7 @@ export class ClientsComponent implements OnInit {
 
     title = 'Clientes';
     formTitle = 'Nuevo cliente';
-    addPlanToClientTitle = 'Nada';
+    addPlanToClientTitle = 'Agregar plan a cliente';
     addPlanToClientClientOptions = '';
 
     clients: Client[];
@@ -75,6 +75,7 @@ export class ClientsComponent implements OnInit {
     p = 1;
 
     isClientPlanActiveTxt: String;
+    isClientPlanActiveSaveButton = true;
     protected filter = '';
     currentDate = new Date();
 
@@ -163,10 +164,13 @@ export class ClientsComponent implements OnInit {
         this.clientService.getClientByClientId(clientId).subscribe({
             next: (client: Client) => {
                 if (client.active) {
-                    this.addPlanToClientTitle = 'Agregar plan a ' + this.clientPlan.firstName + ' ' + this.clientPlan.lastName;
+                    this.addPlanToClientTitle = 'El cliente ' + this.clientPlan.firstName + ' ' + this.clientPlan.lastName + ' ya cuenta con un plan activo';
+                    this.newAddPlanToClientForm.disable();
                     return true;
                 } else {
                     this.addPlanToClientTitle = 'El cliente ' + this.clientPlan.firstName + ' ' + this.clientPlan.lastName + ' no está activo';
+                    this.isClientPlanActiveSaveButton = false;
+                    this.newAddPlanToClientForm.enable();
                     return false;
                 }
             },

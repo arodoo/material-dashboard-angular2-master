@@ -22,25 +22,25 @@
                                 <th>
                                     Fecha de entrada
                                 </th>
-                                <th style="text-align: center">
-                                    Acciones
-                                </th>
+<!--                                <th style="text-align: center">-->
+<!--                                    Acciones-->
+<!--                                </th>-->
                                 </thead>
 
                                 <tbody>
                                 <tr *ngFor="let entry of entries | filter: searchTerms | paginate: { itemsPerPage: 10, currentPage:p}">
                                     <td>
-                                        {{entry.entryId}} {{entry.client.lastName}}
+                                        {{entry.client.firstName}} {{entry.client.lastName}}
                                     </td>
                                     <td>
                                         {{entry.entryDate | date: 'EEEE dd/MM/yyyy HH:mm:ss'}}
                                     </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger"
-                                                (click)="deleteEntry(entry.entryId)">
-                                            Eliminar
-                                        </button>
-                                    </td>
+<!--                                    <td>-->
+<!--                                        <button type="button" class="btn btn-danger"-->
+<!--                                                (click)="deleteEntry(entry.entryId)">-->
+<!--                                            Eliminar-->
+<!--                                        </button>-->
+<!--                                    </td>-->
                                 </tr>
                                 </tbody>
                                 <pagination-controls (pageChange)="p = $event"></pagination-controls>
@@ -85,11 +85,11 @@
                             {{client.lastName}}
                         </td>
                         <td>
-                            {{client.isActive ? 'Si' : 'No'}}
+                            {{client.active ? 'Si' : 'No'}}
                         </td>
                         <td style="padding: 2rem">
                             <button type="button" id="addPlanToClientButton" class="btn btn-primary"
-                                    (click)="registerEntry(client.clientId)">Registrar
+                                    [disabled]="!client.active" (click)="registerEntry(client.clientId)">Registrar
                             </button>
                         </td>
                     </tr>

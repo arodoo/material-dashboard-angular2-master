@@ -179,7 +179,7 @@
                     <mat-label>Selecciona el cliente</mat-label>
                     <br>
                     <mat-select formControlName="client" [style]="getSelectClientStyle()">
-                        <mat-option [value]="clientPlan">{{addPlanToClientClientOptions}}</mat-option>
+                        <mat-option  [value]="clientPlan">{{addPlanToClientClientOptions}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -206,7 +206,7 @@
         </div>
         <div class="">
             <button type="submit" class="btn btn-primary"
-                    [disabled]="newAddPlanToClientForm.invalid">Agregar
+                    [disabled]="newAddPlanToClientForm.invalid || isClientPlanActiveSaveButton">Agregar
             </button>
             <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar
             </button>
